@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fake News Detector — Verify any news headline or URL against 8 trusted global sources including BBC, Reuters, AP News, and more.">
+    <title>Fake News Detector — Verify Headlines Instantly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="webdesign.css">
+</head>
+<body>
+
+    <!-- Animated background particles -->
+    <div class="bg-particles" aria-hidden="true">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">&#x1F6E1;</span>
+                <span class="logo-text">VerifyNews</span>
+            </div>
+            <p class="header-tagline">AI-powered headline verification across 8 trusted sources</p>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main-container">
+
+        <!-- Input Card -->
+        <section class="card input-card" id="input-section">
+            <h1 class="card-title">Check a Headline</h1>
+            <p class="card-subtitle">Paste a news headline or article URL below to verify its authenticity against major news agencies worldwide.</p>
+
+            <div class="input-wrapper" id="input-wrapper">
+                <textarea
+                    id="headline-input"
+                    rows="3"
+                    placeholder="e.g. &quot;NASA discovers water on Mars&quot; or paste an article URL..."
+                    spellcheck="false"
+                ></textarea>
+                <div class="input-border-glow"></div>
+            </div>
+
+            <button id="analyze-btn" class="btn-primary" type="button">
+                <span class="btn-icon">&#128269;</span>
+                <span class="btn-label">Analyze</span>
+            </button>
+        </section>
+
+        <!-- Loading State -->
+        <section class="card loading-card hidden" id="loading-section">
+            <div class="spinner-container">
+                <div class="spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">Searching trusted sources<span class="loading-dots"></span></p>
+            </div>
+            <div class="scanning-sources" id="scanning-sources"></div>
+        </section>
+
+        <!-- Results Card -->
+        <section class="card result-card hidden" id="result-section">
+
+            <!-- Verdict Badge -->
+            <div class="verdict-container" id="verdict-container">
+                <div class="verdict-badge" id="verdict-badge">
+                    <span class="verdict-icon" id="verdict-icon"></span>
+                    <span class="verdict-text" id="verdict-text"></span>
+                </div>
+            </div>
+
+            <!-- Headline Analyzed -->
+            <div class="headline-analyzed">
+                <span class="label">Headline Analyzed</span>
+                <p class="headline-text" id="headline-text"></p>
+            </div>
+
+            <!-- Probability Bar -->
+            <div class="probability-section">
+                <div class="probability-header">
+                    <span class="label">Source Match Probability</span>
+                    <span class="probability-value" id="probability-value">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <div class="progress-glow" id="progress-glow"></div>
+                </div>
+            </div>
+
+            <!-- Source List -->
+            <div class="sources-section">
+                <span class="label">Trusted Sources Checked</span>
+                <ul class="source-list" id="source-list"></ul>
+            </div>
+
+            <!-- Analyze Another -->
+            <button id="reset-btn" class="btn-secondary" type="button">
+                <span class="btn-icon">&#8634;</span>
+                <span class="btn-label">Check Another Headline</span>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 VerifyNews &mdash; Educational tool. Cross-reference with trusted journalism.</p>
+    </footer>
+
+    <script src="text.js"></script>
+</body>
+</html>

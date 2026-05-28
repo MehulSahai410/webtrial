@@ -16,7 +16,17 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__, static_folder=os.path.dirname(os.path.abspath(__file__)), static_url_path="")
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=False)
+
+
+@app.after_request
+def add_cors_headers(response):
+    """Ensure every response carries full CORS headers for mobile compatibility."""
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+    response.headers["Access-Control-Max-Age"] = "3600"
+    return response
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -187,9 +197,18 @@ def _check_source(headline: str, source: dict) -> dict:
 # Routes
 # ---------------------------------------------------------------------------
 
-@app.route("/analyze", methods=["POST"])
+@app.route("/analyze", methods=["GET", "POST", "OPTIONS"])
 def analyze():
-    data = request.get_json(force=True)
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        return "", 204
+
+    # Support both GET (?input=...) and POST ({"input": ...}) for compatibility
+    if request.method == "GET":
+        raw_input = (request.args.get("input") or "").strip()
+        data = {"input": raw_input}
+    else:
+        data = request.get_json(force=True)
     raw_input = (data.get("input") or "").strip()
 
     if not raw_input:
@@ -253,4 +272,4 @@ def index():
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)

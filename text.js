@@ -198,15 +198,39 @@
         showLoading();
 
         try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ input }),
-            });
+            let response;
+
+            // Try POST first (standard)
+            try {
+                response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                    },
+                    body: JSON.stringify({ input }),
+                });
+            } catch (postErr) {
+                // Network error on POST — fall through to GET
+                response = null;
+            }
+
+            // If POST got 405 Method Not Allowed, or failed entirely, retry as GET
+            if (!response || response.status === 405) {
+                const params = new URLSearchParams({ input });
+                response = await fetch(API_URL + "?" + params.toString(), {
+                    method: "GET",
+                    headers: { "Accept": "application/json" },
+                });
+            }
 
             if (!response.ok) {
-                const err = await response.json().catch(() => ({}));
-                throw new Error(err.error || `Server error (${response.status})`);
+                let errMsg = `Server error (${response.status})`;
+                try {
+                    const err = await response.json();
+                    if (err.error) errMsg = err.error;
+                } catch (_) {}
+                throw new Error(errMsg);
             }
 
             const data = await response.json();

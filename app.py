@@ -264,7 +264,7 @@ def analyze():
 @app.route("/", methods=["GET"])
 def index():
     """Serve the frontend HTML."""
-    return app.send_static_file("webpage.html")
+    return app.send_static_file("index.html")
 
 
 # ---------------------------------------------------------------------------
